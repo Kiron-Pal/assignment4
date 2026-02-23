@@ -22,3 +22,16 @@ before() / after(): Inserts the element relative to a specific sibling element.
 insertAdjacentElement(): Offers precise control ('afterbegin', 'beforeend').
 
 
+3/ What is Event Bubbling? And how does it work?
+
+
+
+Ans- In DOM manipulation, Event Bubbling is a type of event propagation where an event starts at the specific element that triggered it (the "target") and then flows upward through its ancestors in the DOM tree.
+
+How It Works:
+
+(1)Trigger: An action (like a click) occurs on a child element (e.g., a <button>).
+
+(2)Ascension: The event handler for that button fires first.
+
+(3)Propagation: The event "bubbles" up to the parent <div>, then the <body>, the <html> element, and finally the window object.
