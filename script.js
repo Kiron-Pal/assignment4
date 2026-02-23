@@ -1,0 +1,379 @@
+
+const totalJOb = document.getElementById("total");
+const interviewJOb = document.getElementById("interview");
+const rejectedJOb = document.getElementById("rejected");
+
+
+const allCardSection = document.getElementById("all-card");
+const interviewFilterSection = document.getElementById("interview-card");
+const rejectedFilterSection = document.getElementById("rejected-card");
+
+const allFilterBtn = document.getElementById("all-filter-btn");
+const interviewFilterBtn = document.getElementById("interview-filter-btn");
+const rejectedFilterBtn = document.getElementById("rejected-filter-btn");
+
+const mainContainer = document.getElementById("main");
+
+
+const allCard = document.querySelectorAll("#all-card .card");
+
+
+const availableJobCount = document.getElementById("available-job-total");
+let availableInterViewCount = document.getElementById("interview-available");
+let availableRejectedCount = document.getElementById("rejected-available");
+
+
+let interviewList = [];
+let rejectedList = [];
+let allCardList = [];
+
+
+function calculateJobCount() {
+    
+    totalJOb.innerText = allCardList.length;
+    interviewJOb.innerText = interviewList.length;
+    rejectedJOb.innerText = rejectedList.length;
+
+    availableJobCount.innerText = allCardList.length;
+    availableInterViewCount.innerText = interviewList.length;
+    availableRejectedCount.innerText = rejectedList.length;
+};
+
+
+function showFilterBtn(id) {
+
+    allFilterBtn.classList.remove("bg-[#3b82f6]", "text-white");
+    interviewFilterBtn.classList.remove("bg-[#3b82f6]", "text-white");
+    rejectedFilterBtn.classList.remove("bg-[#3b82f6]", "text-white");
+
+    const selectedId = document.getElementById(id);
+    selectedId.classList.add("bg-[#3b82f6]", "text-white");
+
+   
+    if (id === "interview-filter-btn") {
+        interviewFilterSection.classList.remove("hidden");
+        allCardSection.classList.add("hidden");
+        rejectedFilterSection.classList.add("hidden");
+
+        
+        if (interviewList.length > 0) {
+            availableInterViewCount.parentNode.classList.remove("hidden");
+        } else {
+            availableInterViewCount.parentNode.classList.add("hidden");
+        }
+        availableRejectedCount.parentNode.classList.add("hidden");
+
+    } else if (id === "all-filter-btn") {
+        allCardSection.classList.remove("hidden");
+        interviewFilterSection.classList.add("hidden");
+        rejectedFilterSection.classList.add("hidden");
+
+        
+        availableInterViewCount.parentNode.classList.add("hidden");
+        availableRejectedCount.parentNode.classList.add("hidden");
+
+    } else if (id === "rejected-filter-btn") {
+        rejectedFilterSection.classList.remove("hidden");
+        allCardSection.classList.add("hidden");
+        interviewFilterSection.classList.add("hidden");
+
+        
+        if (rejectedList.length > 0) {
+            availableRejectedCount.parentNode.classList.remove("hidden");
+        } else {
+            availableRejectedCount.parentNode.classList.add("hidden");
+        }
+        availableInterViewCount.parentNode.classList.add("hidden");
+
+    }
+
+};
+
+
+
+function renderAll() {
+    showRenderInterview();
+    showRenderReject();
+}
+
+
+
+function showEmptyCard(section) {
+
+    section.innerHTML = "";
+
+    let div = document.createElement("div");
+    div.className = "card flex justify-between p-5 shadow bg-white rounded-xs mx-auto";
+    div.innerHTML = `
+           <div class="flex justify-center items-center mx-auto py-17">
+            <div>
+                <img class="mx-auto mb-3" src="./jobs.png" alt="">
+                <h5 class="font-semibold text-2xl text-center">No jobs available</h5>
+                <p class="font-medium opacity-45 text-center">Check back soon for new job opportunities</p>
+            </div>
+        </div>
+    `;
+    section.appendChild(div);
+}
+
+
+
+
+if (interviewList.length === 0) {
+    showEmptyCard(interviewFilterSection);
+}
+function showRenderInterview() {
+
+    interviewFilterSection.innerHTML = "";
+
+    if (interviewList.length === 0) {
+        showEmptyCard(interviewFilterSection);
+        return;
+    }
+
+
+    for (let interView of interviewList) {
+        let div = document.createElement("div");
+        div.className = "card flex justify-between p-5 shadow bg-white rounded-xs";
+        div.innerHTML = `
+         <div class="space-y-4 w-full">
+
+            <div class="flex justify-between ">
+
+                        <div>
+                            <p class="company-name text-xl font-semibold mb-2">${interView.companyName}</p>
+                            <p class="skill-name opacity-50 ">${interView.skillName}
+                            </p>
+                        </div>
+
+                        <div>
+                            <button class="delete-btn text-red-600 px-3 py-1 rounded font-extrabold text-3xl">
+                                <span
+                                    class="p-2 shadow  border-red-700 hover:bg-red-100 hover:border transition-all duration-600 rounded-full cursor-pointer"><i
+                                        class="fa-regular fa-trash-can"></i></span>
+                            </button>
+                        </div>
+
+                    </div>
+
+            <div class="flex gap-3 items-center">
+                <p class="job-detail opacity-50">${interView.jobdetail}</p>
+
+            </div>
+
+            <p
+                class="status p-2 px-4 shadow font-semibold w-fit border-2 rounded-[7px] bg-green-200 text-green-700 border-green-500 cursor-pointer">
+                ${interView.status}</p>
+            <p class="notes opacity-60">${interView.notes}</p>
+
+            <div class="flex gap-5">
+                <button
+                    class="interview-btn border-2 p-1.5 border-green-500 text-green-600  px-4 rounded font-semibold hover:bg-green-100 transition-all duration-300 cursor-pointer">INTERVIEW</button>
+
+                <button
+                    class="rejected-btn border-2 border-red-500 text-red-600 p-1.5 px-4 rounded font-semibold hover:bg-red-100 transition-all duration-300 cursor-pointer">REJECTED</button>
+            </div>
+        </div>
+    
+        `;
+
+        interviewFilterSection.appendChild(div);
+
+
+    };
+
+}
+
+
+
+if (rejectedList.length === 0) {
+    showEmptyCard(rejectedFilterSection);
+}
+function showRenderReject() {
+
+    rejectedFilterSection.innerHTML = "";
+
+    if (rejectedList.length === 0) {
+        showEmptyCard(rejectedFilterSection);
+        return;
+    }
+
+    for (let reject of rejectedList) {
+
+        let div = document.createElement("div");
+        div.className = "card flex justify-between p-5 shadow bg-white rounded-xs";
+        div.innerHTML = `
+               <div class="space-y-4 w-full">
+               
+                    <div class="flex justify-between ">
+
+                        <div>
+                            <p class="company-name text-xl font-semibold mb-2">${reject.companyName}</p>
+                            <p class="skill-name opacity-50 ">${reject.skillName}
+                            </p>
+                        </div>
+
+                        <div>
+                            <button class="delete-btn text-red-600 px-3 py-1 rounded font-extrabold text-3xl">
+                                <span
+                                    class="p-2 shadow  border-red-700 hover:bg-red-100 hover:border transition-all duration-600 rounded-full cursor-pointer"><i
+                                        class="fa-regular fa-trash-can"></i></span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="flex gap-3 items-center">
+                        <p class="job-detail opacity-50">${reject.jobdetail}</p>
+
+                    </div>
+
+                     <p class="status p-2 px-4 shadow font-semibold w-fit border-2 rounded-[7px] bg-red-200 text-red-700 border-red-500 cursor-pointer">${reject.status}</p>
+                    <p class="notes opacity-60">${reject.notes}</p>
+
+                    <div class="flex gap-5">
+
+                      <button
+                            class="interview-btn border-2 p-1.5 border-green-500 text-green-600  px-4 rounded font-semibold hover:bg-green-100 transition-all duration-300 cursor-pointer">INTERVIEW</button>
+
+                        <button
+                            class="rejected-btn border-2 border-red-500 text-red-600 p-1.5 px-4 rounded font-semibold hover:bg-red-100 transition-all duration-300 cursor-pointer">REJECTED</button>
+
+                    </div>
+                   
+             
+                </div>
+              
+              `;
+
+        rejectedFilterSection.appendChild(div);
+
+    }
+
+}
+
+
+
+
+mainContainer.addEventListener("click", function (event) {
+
+
+    if (event.target.closest(".delete-btn")) {
+        let parentNode = event.target.closest(".card");
+        let companyName = parentNode.querySelector(".company-name").innerText;
+
+        allCardList = allCardList.filter(item => item.companyName !== companyName);
+
+        interviewList = interviewList.filter(item => item.companyName !== companyName);
+
+        rejectedList = rejectedList.filter(item => item.companyName !== companyName);
+
+        parentNode.remove();
+        calculateJobCount();
+        renderAll();
+
+        if (allCardList.length === 0) {
+            showEmptyCard(allCardSection);
+        }
+
+
+    } else if (event.target.classList.contains("interview-btn")) {
+        let parentNode = event.target.closest(".card");
+        let companyName = parentNode.querySelector(".company-name").innerText;
+        let skillName = parentNode.querySelector(".skill-name").innerText;
+        let jobLocation = parentNode.querySelector(".job-detail").innerText;
+        let notes = parentNode.querySelector(".notes").innerText;
+        let statusEle = parentNode.querySelector(".status");
+        statusEle.innerText = "INTERVIEW";
+        let status = "INTERVIEW";
+
+        const cardInfo = {
+            companyName,
+            skillName,
+            jobLocation,
+            status,
+            notes
+        }
+
+        let interViewCancel = interviewList.find(item => item.companyName === cardInfo.companyName);
+
+        if (!interViewCancel) {
+            interviewList.push(cardInfo);
+        }
+
+        rejectedList = rejectedList.filter(item => item.companyName !== cardInfo.companyName);
+
+       
+        statusEle.classList.remove("bg-red-200", "text-red-700", "border-red-500");
+        statusEle.classList.add("bg-green-200", "text-green-700", "border-2", "border-green-500");
+
+        calculateJobCount();
+        renderAll();
+
+    }
+
+    else if (event.target.classList.contains("rejected-btn")) {
+
+        let parentNode = event.target.closest(".card");
+        let companyName = parentNode.querySelector(".company-name").innerText;
+        let skillName = parentNode.querySelector(".skill-name").innerText;
+        let jobLocation = parentNode.querySelector(".job-detail").innerText;
+        let notes = parentNode.querySelector(".notes").innerText;
+        let statusEle = parentNode.querySelector(".status");
+        statusEle.innerText = "REJECTED";
+        let status = "REJECTED";
+
+        const cardInfo = {
+            companyName,
+            skillName,
+            jobLocation,
+            status,
+            notes
+        }
+
+        let rejectedCancel = rejectedList.find(item => item.companyName === cardInfo.companyName);
+
+        if (!rejectedCancel) {
+            rejectedList.push(cardInfo);
+        }
+
+        interviewList = interviewList.filter(item => item.companyName !== cardInfo.companyName);
+
+        
+        statusEle.classList.remove("bg-green-200", "text-green-700", "border-green-500");
+        statusEle.classList.add("bg-red-200", "text-red-700", "border-2", "border-red-500");
+
+
+        calculateJobCount();
+        renderAll();
+
+    }
+
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    showFilterBtn("all-filter-btn");
+
+
+    for (let card of allCard) {
+        let companyName = card.querySelector(".company-name").innerText;
+        let skillName = card.querySelector(".skill-name").innerText;
+        let jobLocation = card.querySelector(".job-detail").innerText;
+        let status = card.querySelector(".status").innerText;
+        let notes = card.querySelector(".notes").innerText;
+
+        let cardObject = {
+            companyName,
+            skillName,
+            jobLocation,
+            status,
+            notes
+        }
+
+        allCardList.push(cardObject);
+    }
+
+    calculateJobCount();
+});
