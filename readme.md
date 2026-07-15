@@ -1,3 +1,5 @@
+live link: https://job-locate.netlify.app/
+
 1. What is the difference between getElementById, getElementsByClassName, and querySelector / querySelectorAll?
 
 Ans - The primary difference lies in the specificity and the type of object returned. getElementById is the most restrictive but fastest, targeting a unique ID and returning a single Element. while, getElementsByClassName searches for all elements with a specific class and returns a live HTMLCollection, which automatically updates if the DOM changes.
